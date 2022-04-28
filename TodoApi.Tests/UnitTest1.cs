@@ -69,8 +69,6 @@ namespace TodoApi.Tests
             //assert
             repositoryStub.Verify(_ => _.DeleteToDoList(existingItem));
         }
-        /*
-
         [Fact]
         public async Task DeleteToDoList_WithExistingItem_Should_ReturnNoContent()
         {
@@ -84,7 +82,7 @@ namespace TodoApi.Tests
             repositoryStub
                 .Setup(_ => _.GetSpecificTodoAsync(itemID))
                 .ReturnsAsync(existingItem);
-            repositoryStub.Setup(_ => _.SaveChangesAsync()).Returns(Task.CompletedTask); 
+            repositoryStub.Setup(_ => _.SaveChangesAsync()).ReturnsAsync(true);
 
             var controller = new ToDoController(repositoryStub.Object, mapper.Object);
 
@@ -94,9 +92,6 @@ namespace TodoApi.Tests
             //assert
             result.Should().BeOfType<NoContentResult>();
         }
-        */
-   
-
 
     }
 
