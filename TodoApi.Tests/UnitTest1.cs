@@ -36,7 +36,10 @@ namespace TodoApi.Tests
             //Arrange
             
             Mock<IToDoListRepository> repositoryStub = new();
-            repositoryStub.Setup(repo => repo.GetSpecificTodoAsync(It.IsAny<int>())).ReturnsAsync((ToDoList)null);
+            //Setup expected behavior of mock
+            repositoryStub
+                .Setup(repo => repo.GetSpecificTodoAsync(It.IsAny<int>()))
+                .ReturnsAsync((ToDoList)null);
 
             var controller = new ToDoController(repositoryStub.Object, mapper.Object);
             //Act
@@ -58,7 +61,7 @@ namespace TodoApi.Tests
 
             //Setup expected behavior of mock
             repositoryStub
-                .Setup(_ => _.GetSpecificTodoAsync(itemID))
+                .Setup(repo => repo.GetSpecificTodoAsync(itemID))
                 .ReturnsAsync(existingItem);
 
             var controller = new ToDoController(repositoryStub.Object, mapper.Object);
@@ -67,7 +70,7 @@ namespace TodoApi.Tests
             await controller.DeleteToDoList(itemID);
 
             //assert
-            repositoryStub.Verify(_ => _.DeleteToDoList(existingItem));
+            repositoryStub.Verify(repo => repo.DeleteToDoList(existingItem));
         }
         [Fact]
         public async Task DeleteToDoList_WithExistingItem_Should_ReturnNoContent()
@@ -80,9 +83,9 @@ namespace TodoApi.Tests
 
             //Setup expected behavior of mock
             repositoryStub
-                .Setup(_ => _.GetSpecificTodoAsync(itemID))
+                .Setup(repo => repo.GetSpecificTodoAsync(itemID))
                 .ReturnsAsync(existingItem);
-            repositoryStub.Setup(_ => _.SaveChangesAsync()).ReturnsAsync(true);
+            repositoryStub.Setup(repo => repo.SaveChangesAsync()).ReturnsAsync(true);
 
             var controller = new ToDoController(repositoryStub.Object, mapper.Object);
 
